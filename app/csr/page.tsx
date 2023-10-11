@@ -1,8 +1,8 @@
+'use client';
 
 import { graphql } from '@/app/@generated/gql';
-import { generateKey } from '@/app/utils/generate-key';
-import { useQuery , Context, Client } from '@urql/next';
-import { useState, useContext } from 'react';
+import { useQuery } from '@urql/next';
+import { useState } from 'react';
 
 const searchItemsQuery = graphql(/* GraphQL */`
   query SearchItems($where: ItemWhere!) {
@@ -46,7 +46,7 @@ const ItemList = ({title, description, pause}: {title: string, description: stri
   )
 }
 
-const Items = () => {
+export default function Page() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [submit, setSubmit] = useState(false);
@@ -57,7 +57,7 @@ const Items = () => {
   };
   
   return (
-    <>
+    <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <form onSubmit={handleSubmit}>
         <div className="grid gap-2">
           <input className="text-black" type="text" placeholder="title" value={title} onChange={(e) => {setTitle(e.target.value); setSubmit(false);}} />
@@ -67,8 +67,6 @@ const Items = () => {
 
         <ItemList title={title} description={description} pause={!((title == '' && description == '') || submit)} />
       </form>
-    </>
+    </main>
   );
 };
-
-export default Items;
