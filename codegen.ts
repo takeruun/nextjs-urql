@@ -13,7 +13,7 @@ const config: CodegenConfig = {
       }
     }
   ],
-  documents: './app/*.{tsx,ts}',
+  documents: './app/**/*.{tsx,ts}',
   generates: {
     "app/@generated/gql/": {
       preset: "client",
