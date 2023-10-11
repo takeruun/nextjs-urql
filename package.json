@@ -11,9 +11,9 @@
     "codegen": "graphql-codegen --config codegen.ts"
   },
   "dependencies": {
+    "@urql/next": "^1.0.0",
     "graphql": "^16.8.1",
     "next": "13.5.4",
-    "next-urql": "^5.0.2",
     "react": "^18",
     "react-dom": "^18",
     "urql": "^4.0.5"
