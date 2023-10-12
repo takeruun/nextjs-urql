@@ -3,6 +3,7 @@
 import { graphql } from '@/app/@generated/gql';
 import { useQuery } from '@urql/next';
 import { useState } from 'react';
+import ItemCreator from '../components/ItemCreator';
 
 const searchItemsQuery = graphql(/* GraphQL */`
   query SearchItems($where: ItemWhere!) {
@@ -57,16 +58,23 @@ export default function Page() {
   };
   
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex min-h-screen flex-col items-center p-24">
       <form onSubmit={handleSubmit}>
-        <div className="grid gap-2">
+        <div className="grid">
           <input className="text-black" type="text" placeholder="title" value={title} onChange={(e) => {setTitle(e.target.value); setSubmit(false);}} />
           <input className="text-black" type="text" placeholder='description' value={description} onChange={(e) => {setDescription(e.target.value);setSubmit(false);}} />
         </div>
         <button type="submit">Search</button>
-
-        <ItemList title={title} description={description} pause={!((title == '' && description == '') || submit)} />
       </form>
+      <ItemList title={title} description={description} pause={!((title == '' && description == '') || submit)} />
+
+      <div className="mt-4">
+        <h2>Item Create</h2>
+
+        <div className="mt-2">
+          <ItemCreator />
+        </div>
+      </div>
     </main>
   );
 };

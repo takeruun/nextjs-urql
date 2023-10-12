@@ -13,6 +13,8 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
+    "\n  query ItemList {\n    items {\n      id\n      title\n      description\n    }\n  }\n": types.ItemListDocument,
+    "\n  mutation CreateItem($title: String!, $description: String!) {\n    createItem(title: $title, description: $description) {\n      id\n      title\n      description\n    }\n  }": types.CreateItemDocument,
     "\n  query SearchItems($where: ItemWhere!) {\n    searchItems(where: $where) {\n      id\n      item {\n        title\n        description\n      }\n    }\n  }": types.SearchItemsDocument,
 };
 
@@ -30,6 +32,14 @@ const documents = {
  */
 export function graphql(source: string): unknown;
 
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query ItemList {\n    items {\n      id\n      title\n      description\n    }\n  }\n"): (typeof documents)["\n  query ItemList {\n    items {\n      id\n      title\n      description\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation CreateItem($title: String!, $description: String!) {\n    createItem(title: $title, description: $description) {\n      id\n      title\n      description\n    }\n  }"): (typeof documents)["\n  mutation CreateItem($title: String!, $description: String!) {\n    createItem(title: $title, description: $description) {\n      id\n      title\n      description\n    }\n  }"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
