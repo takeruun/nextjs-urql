@@ -4,6 +4,7 @@ import { graphql } from '@/app/@generated/gql';
 import { useQuery } from '@urql/next';
 import { useState } from 'react';
 import ItemCreator from '../components/ItemCreator';
+import { useRouter } from 'next/navigation';
 
 const searchItemsQuery = graphql(/* GraphQL */`
   query SearchItems($where: ItemWhere!) {
@@ -17,6 +18,7 @@ const searchItemsQuery = graphql(/* GraphQL */`
   }`);
 
 const ItemList = ({title, description, pause}: {title: string, description: string, pause: boolean}) => {
+  const router = useRouter();
   const [result] = useQuery({
     query: searchItemsQuery,
     pause,
@@ -39,7 +41,7 @@ const ItemList = ({title, description, pause}: {title: string, description: stri
     {data && (
         <ul>
           {data.searchItems.map(item => (
-            <li key={item.id}>title: {item.item?.title}, description: {item.item?.description}</li>
+            <li key={item.id} onClick={()=>router.push(`csr/${item.id}`)}>id: {item.id}, title: {item.item?.title}, description: {item.item?.description}</li>
           ))}
         </ul>
       )}
