@@ -15,9 +15,11 @@ const ITEM_LIST_QUERY = graphql(/* GraphQL */`
 const ITEM_CREATE_MUTATION = graphql(/* GraphQL */`
   mutation CreateItem($title: String!, $description: String!) {
     createItem(title: $title, description: $description) {
-      id
-      title
-      description
+      item {
+        id
+        title
+        description
+      }
     }
   }`);
 
@@ -27,15 +29,11 @@ type FormValues = {
 }
 
 const ItemCreator = () => {
-
-  const [{},refetch] = useQuery({query: ITEM_LIST_QUERY});
   const [{data}] = useQuery({query: ITEM_LIST_QUERY});
-
-  const [result, createItem] = useMutation(ITEM_CREATE_MUTATION);
+  const [_, createItem] = useMutation(ITEM_CREATE_MUTATION);
   const { register, handleSubmit } = useForm<FormValues>();
   const onSubmit = async (data: FormValues) => {
     await createItem(data);
-    refetch({requestPolicy: 'network-only'});
   };
 
   return (
@@ -43,7 +41,7 @@ const ItemCreator = () => {
       <h1>Item List</h1>
       <ul>
         {data && data.items.map(item => (
-          <li key={item.id}>title: {item.title}, description: {item.description}</li>
+          <li key={item.id}>id: {item.id}, title: {item.title}, description: {item.description}</li>
         ))}
       </ul>
 

@@ -2,6 +2,7 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
 import { UrqlProvider, ssrExchange, cacheExchange, fetchExchange, createClient } from '@urql/next';
+// import { refocusExchange } from '@urql/exchange-refocus';
 import { useMemo } from 'react';
 
 const inter = Inter({ subsets: ['latin'] })
@@ -20,6 +21,7 @@ export default function RootLayout({
           'x-hasura-admin-secret': 'secret'
         }
       },
+      requestPolicy: 'cache-first',
       exchanges: [cacheExchange, ssr, fetchExchange],
       suspense: true,
     });
