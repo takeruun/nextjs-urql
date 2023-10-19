@@ -1,7 +1,15 @@
+'use client';
+
+import { useRouter } from 'next/navigation';
+
 export default function Home() {
+  const router = useRouter();
+  
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      csr or ssr
+      <button onClick={()=>router.push('/csr')}>csr</button>
+      or
+      <button onClick={()=>router.push('/ssr')}>ssr</button>
     </main>
   )
 }
