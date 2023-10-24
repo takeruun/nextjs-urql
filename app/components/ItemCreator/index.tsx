@@ -1,16 +1,7 @@
 import { useForm } from "react-hook-form"
 import { graphql } from '@/app/@generated/gql';
-import { useMutation, useQuery } from '@urql/next';
+import { useMutation } from '@urql/next';
 
-const ITEM_LIST_QUERY = graphql(/* GraphQL */`
-  query ItemList {
-    items {
-      id
-      title
-      description
-    }
-  }
-`);
 
 const ITEM_CREATE_MUTATION = graphql(/* GraphQL */`
   mutation CreateItem($title: String!, $description: String!) {
@@ -29,7 +20,6 @@ type FormValues = {
 }
 
 const ItemCreator = () => {
-  const [{data}] = useQuery({query: ITEM_LIST_QUERY});
   const [_, createItem] = useMutation(ITEM_CREATE_MUTATION);
   const { register, handleSubmit } = useForm<FormValues>();
   const onSubmit = async (data: FormValues) => {
@@ -38,13 +28,6 @@ const ItemCreator = () => {
 
   return (
     <>
-      <h1>Item List</h1>
-      <ul>
-        {data && data.items.map(item => (
-          <li key={item.id}>id: {item.id}, title: {item.title}, description: {item.description}</li>
-        ))}
-      </ul>
-
       <div className="flex flex-col items-center justify-center w-full">
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center justify-center w-full">
           <input className="text-black" placeholder="title" {...register("title")} />

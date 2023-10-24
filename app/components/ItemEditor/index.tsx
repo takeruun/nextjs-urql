@@ -22,16 +22,18 @@ type FormValues = {
 
 type Props = {
   id: string;
+  isPage: boolean;
 }
 
 const ItemEditor: React.FC<Props> = (props) => {
-  const {id} = props;
+  const {id, isPage} = props;
   const router = useRouter();
   const [result, updateItem] = useMutation(ITEM_UPDATE_MUTATION);
-  const { register, handleSubmit } = useForm<FormValues>();
+  const { register, handleSubmit, reset } = useForm<FormValues>();
   const onSubmit = async (data: FormValues) => {
     await updateItem({id, ...data});
-    router.push('/csr');
+    reset();
+    if (isPage) router.push('/csr');
   };
 
   return (

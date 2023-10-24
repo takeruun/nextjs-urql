@@ -2,9 +2,20 @@
 
 import { graphql } from '@/app/@generated/gql';
 import { useQuery } from '@urql/next';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ItemCreator from '../components/ItemCreator';
+import ItemEditor from "@/app/components/ItemEditor";
 import { useRouter } from 'next/navigation';
+
+const ITEM_LIST_QUERY = graphql(/* GraphQL */`
+  query ItemList {
+    items(orderBy: {id: ASC}) {
+      id
+      title
+      description
+    }
+  }
+`);
 
 const searchItemsQuery = graphql(/* GraphQL */`
   query SearchItems($where: ItemWhere!) {
@@ -17,7 +28,7 @@ const searchItemsQuery = graphql(/* GraphQL */`
     }
   }`);
 
-const ItemList = ({title, description, pause}: {title: string, description: string, pause: boolean}) => {
+const ItemSearchList = ({title, description, pause}: {title: string, description: string, pause: boolean}) => {
   const router = useRouter();
   const [result] = useQuery({
     query: searchItemsQuery,
@@ -50,6 +61,8 @@ const ItemList = ({title, description, pause}: {title: string, description: stri
 }
 
 export default function Page() {
+  const [{data}, reexecute] = useQuery({query: ITEM_LIST_QUERY});
+  const [id, setId] = useState('1');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [submit, setSubmit] = useState(false);
@@ -58,23 +71,53 @@ export default function Page() {
     e.preventDefault();
     setSubmit(true);
   };
+
+  useEffect(()=> reexecute({requestPolicy: 'cache-and-network'}),[reexecute]);
   
   return (
     <main className="flex min-h-screen flex-col items-center p-24">
-      <form onSubmit={handleSubmit}>
-        <div className="grid">
-          <input className="text-black" type="text" placeholder="title" value={title} onChange={(e) => {setTitle(e.target.value); setSubmit(false);}} />
-          <input className="text-black" type="text" placeholder='description' value={description} onChange={(e) => {setDescription(e.target.value);setSubmit(false);}} />
+      <div className="mt-4">
+        <h2>Search items</h2>
+        <ItemSearchList title={title} description={description} pause={!((title == '' && description == '') || submit)} />
+
+        <form onSubmit={handleSubmit}>
+          <div className="grid">
+            <input className="text-black" type="text" placeholder="title" value={title} onChange={(e) => {setTitle(e.target.value); setSubmit(false);}} />
+            <input className="text-black" type="text" placeholder='description' value={description} onChange={(e) => {setDescription(e.target.value);setSubmit(false);}} />
+          </div>
+          <button type="submit">Search</button>
+        </form>
+      </div>
+
+      <div className="mt-4">
+        <h2>Item List</h2>
+
+        <div className="mt-2">
+          <ul>
+            {data && data.items.map(item => (
+              <li key={item.id}>id: {item.id}, title: {item.title}, description: {item.description}</li>
+            ))}
+          </ul>
         </div>
-        <button type="submit">Search</button>
-      </form>
-      <ItemList title={title} description={description} pause={!((title == '' && description == '') || submit)} />
+      </div>
 
       <div className="mt-4">
         <h2>Item Create</h2>
 
         <div className="mt-2">
           <ItemCreator />
+        </div>
+      </div>
+
+      <div className="mt-4">
+        <h2>Item Edit</h2>
+
+        <div className="mt-2">
+          <div>
+            <label>id</label>
+            <input className="text-black" type="text" value={id} onChange={(e)=>setId(e.target.value)}/>
+          </div>
+          <ItemEditor id={id} isPage={false} />
         </div>
       </div>
     </main>
