@@ -4,5 +4,5 @@
 - next
 - graphql
 - @urql/next
-  - [ドキュメント](https://formidable.com/open-source/urql/docs/)https://formidable.com/open-source/urql/docs/
+  - [ドキュメント](https://formidable.com/open-source/urql/docs/)
   
