@@ -16,3 +16,17 @@ yarn
 ```sh
 yarn dev
 ```  
+
+# コメント
+## 同ページだと query 実行される
+app/csr/page.tsx:75 をコメントアウト状態でも、`ITEM_LIST_QUERY`は実行される模様
+
+https://github.com/takeruun/nextjs-urql/assets/48900966/9652d22e-7d56-4455-9b5a-db3ca65abc90
+
+## 同ページは実行されない
+リロードすると `ITEM_LIST_QUERY`実行されてないのにも関わらず、データは書き変わっている。
+
+キャッシュは更新されているも模様。
+
+https://github.com/takeruun/nextjs-urql/assets/48900966/1da07e53-4873-46ab-9e31-b4840c8684ba
+
