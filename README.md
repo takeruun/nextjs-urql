@@ -19,7 +19,7 @@ yarn dev
 
 # コメント
 ## 同ページだと query 実行される
-[app/csr/page.tsx](/app/csr/page.tsx#L75) をコメントアウト状態でも、`ITEM_LIST_QUERY`は実行される模様
+[reexecute実行](/app/csr/page.tsx#L75) をコメントアウト状態でも、`ITEM_LIST_QUERY`は実行される模様
 
 https://github.com/takeruun/nextjs-urql/assets/48900966/9652d22e-7d56-4455-9b5a-db3ca65abc90
 
